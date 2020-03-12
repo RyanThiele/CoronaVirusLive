@@ -21,7 +21,7 @@ namespace CoronaVirusLive.Models
 
         }
 
-        public Case(int index, string line)
+        public Case(int id, string line)
         {
             if (String.IsNullOrWhiteSpace(line)) return;
             string[] columns = line.Split(',');
@@ -41,6 +41,7 @@ namespace CoronaVirusLive.Models
 
             DateTime.TryParseExact(lastUpdatedDateTimeValue, "M/dd/yyyy HH:mm", CultureInfo.CurrentCulture, DateTimeStyles.None, out lastUpdateDateTime);
 
+            Id = id;
             Confirmed = confirmed;
             Deaths = deaths;
             Recovered = recovered;

@@ -22,52 +22,57 @@ namespace CoronaVirusLive.Services
             List<Case> cases = new List<Case>();
             int days = (DateTime.Today - earlestDate).Days;
 
+            for (int i = 0; i < days; i++)
+            {
+                IEnumerable<Case> models = await GetCasesByDate(earlestDate.AddDays(i));
+                if (models != null) cases.AddRange(models);
+            }
+
+            return cases;
+        }
+
+        public async Task<IEnumerable<Case>> GetCasesByDate(DateTime date)
+        {
+            List<Case> models = new List<Case>();
+
             using (WebClient client = new WebClient())
             {
-                //client.BaseAddress = baseUri;
+                byte[] data = null;
 
-                for (int i = 0; i < days; i++)
+                try
                 {
-                    byte[] data = null;
 
-                    try
+                    string fileName = $"{baseUri}/{date.ToStandardDateString()}.csv";
+                    data = await client.DownloadDataTaskAsync(new Uri(fileName));
+                    if (data == null) return null;
+
+                    using (MemoryStream ms = new MemoryStream(data))
                     {
-
-                        string fileName = $"{baseUri}/{earlestDate.AddDays(i).ToStandardDateString()}.csv";
-                        data = await client.DownloadDataTaskAsync(new Uri(fileName));
-                        if (data == null) continue;
-
-                        using (MemoryStream ms = new MemoryStream(data))
+                        using (StreamReader reader = new StreamReader(ms))
                         {
-                            using (StreamReader reader = new StreamReader(ms))
-                            {
-                                int index = 0;
+                            int index = 0;
 
-                                while (reader.Peek() != -1)
-                                {
-                                    string line = await reader.ReadLineAsync();
-                                    if (index++ == 0) continue;
-                                    cases.Add(new Case(index, line));
-                                }
+                            while (reader.Peek() != -1)
+                            {
+                                string line = await reader.ReadLineAsync();
+                                if (index++ == 0) continue;
+
+                                Case model = new Case((date.DayOfYear * 100) + index, line);
+                                if (model == null) continue;
+
+                                models.Add(model);
                             }
                         }
                     }
-                    catch (Exception ex)
-                    {
-
-                    }
-
-                    if (data == null) continue;
+                }
+                catch (Exception ex)
+                {
 
                 }
+
+                return models;
+
             }
-
-            throw new NotImplementedException();
-        }
-
-        public Task<IEnumerable<Case>> GetCasesByDate(DateTime date)
-        {
-            throw new NotImplementedException();
         }
     }
 }
