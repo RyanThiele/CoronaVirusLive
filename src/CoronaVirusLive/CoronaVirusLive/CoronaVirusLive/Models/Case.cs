@@ -12,6 +12,8 @@ namespace CoronaVirusLive.Models
         public int Confirmed { get; set; }
         public int Deaths { get; set; }
         public int Recovered { get; set; }
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
 
 
         #region Constructors
@@ -30,6 +32,7 @@ namespace CoronaVirusLive.Models
             string lastUpdatedDateTimeValue = null;
             DateTime lastUpdateDateTime = new DateTime();
             int confirmed = 0, deaths = 0, recovered = 0;
+            double latitude = 0, longitude = 0;
 
 
             if (columns.Length > 0) ProvinceState = columns[0];
@@ -38,14 +41,18 @@ namespace CoronaVirusLive.Models
             if (columns.Length > 3) int.TryParse(columns[3], out confirmed);
             if (columns.Length > 4) int.TryParse(columns[4], out deaths);
             if (columns.Length > 5) int.TryParse(columns[5], out recovered);
+            if (columns.Length > 6) double.TryParse(columns[6], out latitude);
+            if (columns.Length > 7) double.TryParse(columns[7], out longitude);
 
             DateTime.TryParseExact(lastUpdatedDateTimeValue, "M/dd/yyyy HH:mm", CultureInfo.CurrentCulture, DateTimeStyles.None, out lastUpdateDateTime);
 
             Id = id;
+            LastUpdate = lastUpdateDateTime;
             Confirmed = confirmed;
             Deaths = deaths;
             Recovered = recovered;
-            LastUpdate = lastUpdateDateTime;
+            Latitude = latitude;
+            Longitude = longitude;
         }
 
         #endregion Constructors
