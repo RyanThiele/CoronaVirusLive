@@ -1,8 +1,5 @@
-﻿using System;
+﻿using CoronaVirusLive.Services;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
-using CoronaVirusLive.Services;
-using CoronaVirusLive.Views;
 
 namespace CoronaVirusLive
 {
@@ -14,7 +11,9 @@ namespace CoronaVirusLive
             InitializeComponent();
 
             DependencyService.Register<MockDataStore>();
-            MainPage = new AppShell();
+            DependencyService.Register<ICaseService, CaseService>();
+
+            MainPage = new Views.MainPage();
         }
 
         protected override void OnStart()
