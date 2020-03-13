@@ -10,7 +10,6 @@ namespace CoronaVirusLive
         {
             InitializeComponent();
 
-            DependencyService.Register<MockDataStore>();
             DependencyService.Register<ICaseService, CaseService>();
 
             MainPage = new Views.MainPage();

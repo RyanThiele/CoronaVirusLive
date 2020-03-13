@@ -44,7 +44,10 @@ namespace CoronaVirusLive.Models
             if (columns.Length > 6) double.TryParse(columns[6], out latitude);
             if (columns.Length > 7) double.TryParse(columns[7], out longitude);
 
-            DateTime.TryParseExact(lastUpdatedDateTimeValue, "M/dd/yyyy HH:mm", CultureInfo.CurrentCulture, DateTimeStyles.None, out lastUpdateDateTime);
+
+            DateTime.TryParse(lastUpdatedDateTimeValue, out lastUpdateDateTime);
+            if (lastUpdateDateTime == new DateTime()) DateTime.TryParseExact(lastUpdatedDateTimeValue, "M/dd/yyyy HH:mm", CultureInfo.CurrentCulture, DateTimeStyles.None, out lastUpdateDateTime);
+
 
             Id = id;
             LastUpdate = lastUpdateDateTime;

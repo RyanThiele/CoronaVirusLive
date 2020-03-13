@@ -2,17 +2,12 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-
 using Xamarin.Forms;
-
-using CoronaVirusLive.Models;
-using CoronaVirusLive.Services;
 
 namespace CoronaVirusLive.ViewModels
 {
     public class BaseViewModel : INotifyPropertyChanged
     {
-        public IDataStore<Item> DataStore => DependencyService.Get<IDataStore<Item>>();
 
         bool isBusy = false;
         public bool IsBusy
@@ -28,12 +23,9 @@ namespace CoronaVirusLive.ViewModels
             set { SetProperty(ref title, value); }
         }
 
-        protected bool SetProperty<T>(ref T backingStore, T value,
-            [CallerMemberName]string propertyName = "",
-            Action onChanged = null)
+        protected bool SetProperty<T>(ref T backingStore, T value, [CallerMemberName]string propertyName = "", Action onChanged = null)
         {
-            if (EqualityComparer<T>.Default.Equals(backingStore, value))
-                return false;
+            if (EqualityComparer<T>.Default.Equals(backingStore, value)) return false;
 
             backingStore = value;
             onChanged?.Invoke();
@@ -52,5 +44,10 @@ namespace CoronaVirusLive.ViewModels
             changed.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
+
+        protected void UpdateStatus(string message)
+        {
+            MessagingCenter.Send<BaseViewModel, Messages.StatusMessage>(this, "Status", new Messages.StatusMessage(message));
+        }
     }
 }

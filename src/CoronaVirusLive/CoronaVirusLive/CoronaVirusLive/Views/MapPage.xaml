@@ -8,7 +8,9 @@
              x:Class="CoronaVirusLive.Views.MapPage">
     <ContentPage.Content>
         <StackLayout>
+            <Label HorizontalTextAlignment="End" Text="{Binding Status}" />
             <maps:Map x:Name="Map">
+                
             </maps:Map>
         </StackLayout>
     </ContentPage.Content>

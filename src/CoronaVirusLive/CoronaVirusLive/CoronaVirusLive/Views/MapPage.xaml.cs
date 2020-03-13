@@ -1,11 +1,9 @@
 ﻿using CoronaVirusLive.ViewModels;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using Xamarin.Forms;
+using Xamarin.Forms.Maps;
 using Xamarin.Forms.Xaml;
 
 namespace CoronaVirusLive.Views
@@ -20,7 +18,12 @@ namespace CoronaVirusLive.Views
             InitializeComponent();
 
             BindingContext = viewModel = new MapViewModel();
-            
+
+            MessagingCenter.Subscribe<MapViewModel, IEnumerable<Pin>>(this, "PinsUpdated", (sender, args) =>
+            {
+                Map.Pins.Clear();
+                if (args != null && args.Count() >= 0) args.ToList().ForEach(a => Map.Pins.Add(a));
+            });
         }
 
 
@@ -28,7 +31,7 @@ namespace CoronaVirusLive.Views
         {
             base.OnAppearing();
 
-            
+
         }
     }
 }
