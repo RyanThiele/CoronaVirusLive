@@ -43,7 +43,7 @@ namespace CoronaVirusLive.ViewModels
                     if (modelsWithDates != null || modelsWithDates.Count > 0)
                     {
                         var latestModel = modelsWithDates.OrderByDescending(x => x.LastUpdate).First();
-                        Status = $"Latest Update: {latestModel.LastUpdate.ToShortDateString()}";
+                        Status = $"Latest Update: {latestModel.LastUpdate.ToString()}";
                     }
                     else
                     {
