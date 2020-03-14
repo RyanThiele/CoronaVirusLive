@@ -4,14 +4,16 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:maps="clr-namespace:Xamarin.Forms.Maps;assembly=Xamarin.Forms.Maps"
+             xmlns:controls="clr-namespace:CoronaVirusLive.CustomControls"
              mc:Ignorable="d"
              x:Class="CoronaVirusLive.Views.MapPage">
     <ContentPage.Content>
         <StackLayout>
             <Label HorizontalTextAlignment="End" Text="{Binding Status}" />
-            <maps:Map x:Name="Map">
+            <controls:CustomMap x:Name="customMap" />
+            <!--<maps:Map x:Name="Map">
                 
-            </maps:Map>
+            </maps:Map>-->
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -34,6 +34,7 @@ namespace CoronaVirusLive.ViewModels
                         {
                             Position = new Position(model.Latitude, model.Longitude),
                             Label = $"Confirmed: {model.Confirmed} Dead: {model.Deaths} Recovered: {model.Recovered}",
+                            Address = $"{model.ProvinceState} {model.CountryRegion}",
                             Type = PinType.Place
                         });
                     }
