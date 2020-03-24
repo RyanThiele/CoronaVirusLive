@@ -1,5 +1,6 @@
 ﻿using CoronaVirusLive.CustomControls;
 using CoronaVirusLive.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -49,11 +50,36 @@ namespace CoronaVirusLive.Views
                      //customMap.OnCustomPinsUpdated();
                  }
 
+                 await MoveMapToLocationAsync();
 
-                 Location location = await Geolocation.GetLastKnownLocationAsync();
-                 if (location != null)
-                     customMap.MoveToRegion(MapSpan.FromCenterAndRadius(new Position(location.Latitude, location.Longitude), Distance.FromMiles(1.0)));
              });
+        }
+
+
+        private async Task MoveMapToLocationAsync()
+        {
+            try
+            {
+                Location location = await Geolocation.GetLastKnownLocationAsync();
+                if (location != null)
+                    customMap.MoveToRegion(MapSpan.FromCenterAndRadius(new Position(location.Latitude, location.Longitude), Distance.FromMiles(80.0)));
+            }
+            catch (FeatureNotSupportedException fnsEx)
+            {
+                // Handle not supported on device exception
+            }
+            catch (FeatureNotEnabledException fneEx)
+            {
+                // Handle not enabled on device exception
+            }
+            catch (PermissionException pEx)
+            {
+                // Handle permission exception
+            }
+            catch (Exception ex)
+            {
+                // Unable to get location
+            }
         }
 
 

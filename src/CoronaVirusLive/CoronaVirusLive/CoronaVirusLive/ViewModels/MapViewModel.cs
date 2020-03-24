@@ -30,14 +30,14 @@ namespace CoronaVirusLive.ViewModels
                 {
                     foreach (Case model in arg)
                     {
-
+                        if (model.Confirmed == 0 && model.Deaths == 0 && model.Recovered == 0) continue;
 
                         Cases.Add(model);
                         pins.Add(new Pin()
                         {
                             Position = new Position(model.Latitude, model.Longitude),
                             Label = $"Confirmed: {model.Confirmed} Dead: {model.Deaths} Recovered: {model.Recovered}",
-                            Address = $"{model.ProvinceState} {model.CountryRegion}",
+                            Address = $"{model.Admin2}, {model.ProvinceState}, {model.CountryRegion}",
                             Type = PinType.Place
                         });
 
