@@ -24,11 +24,14 @@ namespace CoronaVirusLive.ViewModels
             {
                 Cases.Clear();
                 pins.Clear();
+                DateTime latestUpdate = new DateTime();
 
                 if (arg != null && arg.Count() > 0)
                 {
                     foreach (Case model in arg)
                     {
+
+
                         Cases.Add(model);
                         pins.Add(new Pin()
                         {
@@ -37,13 +40,16 @@ namespace CoronaVirusLive.ViewModels
                             Address = $"{model.ProvinceState} {model.CountryRegion}",
                             Type = PinType.Place
                         });
+
+                        if (model == null) continue;
+                        if (model.LastUpdate == null) continue;
+                        if (model.LastUpdate == new DateTime()) continue;
+                        if (model.LastUpdate > latestUpdate) latestUpdate = model.LastUpdate;
                     }
 
-                    var modelsWithDates = arg.Where(x => x.LastUpdate > new DateTime()).ToList();
-                    if (modelsWithDates != null || modelsWithDates.Count > 0)
+                    if (latestUpdate > new DateTime())
                     {
-                        var latestModel = modelsWithDates.OrderByDescending(x => x.LastUpdate).First();
-                        Status = $"Latest Update: {latestModel.LastUpdate.ToString()}";
+                        Status = $"Latest Update: {latestUpdate.ToString()}";
                     }
                     else
                     {

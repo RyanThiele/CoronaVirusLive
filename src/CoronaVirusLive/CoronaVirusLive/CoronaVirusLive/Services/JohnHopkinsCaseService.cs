@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CoronaVirusLive.Services
 {
-    public class CaseService : ICaseService
+    public class JohnHopkinsCaseService : ICaseService
     {
         private readonly string baseUri = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports";
         private readonly DateTime earlestDate = new DateTime(2020, 01, 22);
@@ -57,7 +57,7 @@ namespace CoronaVirusLive.Services
                                 string line = await reader.ReadLineAsync();
                                 if (index++ == 0) continue;
 
-                                Case model = new Case((date.DayOfYear * 100) + index, line);
+                                Case model = new Case(line);
                                 if (model == null) continue;
 
                                 models.Add(model);

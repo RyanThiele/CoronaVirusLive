@@ -10,10 +10,10 @@ namespace CoronaVirusLive.Tests.Services
 
     public class CaseServiceTests
     {
-        CoronaVirusLive.Services.ICaseService caseService = new CoronaVirusLive.Services.CaseService();
+        CoronaVirusLive.Services.ICaseService caseService = new CoronaVirusLive.Services.JohnHopkinsCaseService();
 
         [Fact]
-        public async Task DownloadDays()
+        public async Task GetCasesAsync()
         {
             // Arrange
 
@@ -29,7 +29,7 @@ namespace CoronaVirusLive.Tests.Services
 
 
         [Fact]
-        public async Task DownloadDay()
+        public async Task GetCasesByDate()
         {
             // Arrange
 

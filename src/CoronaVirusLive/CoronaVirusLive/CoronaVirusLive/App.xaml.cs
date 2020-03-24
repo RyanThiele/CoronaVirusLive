@@ -13,7 +13,7 @@ namespace CoronaVirusLive
         {
             InitializeComponent();
 
-            DependencyService.Register<ICaseService, CaseService>();
+            DependencyService.Register<ICaseService, JohnHopkinsCaseService>();
 
             MainPage = new Views.MainPage();
         }
