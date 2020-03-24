@@ -6,4 +6,4 @@ Using the data from [https://github.com/CSSEGISandData/COVID-19](https://github.
  - A live map showing current cases
 
 ## Builds and Releases
-All builds and releases are done through [Microosft's App Center](install.appcenter.ms/users/dynamensions/apps/cornona-virus-live-android/distribution_groups/public)
+All builds and releases are done through [Microosft's App Center](https://install.appcenter.ms/users/dynamensions/apps/cornona-virus-live-android/distribution_groups/public)
