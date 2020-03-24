@@ -50,9 +50,9 @@ namespace CoronaVirusLive.Views
                  }
 
 
-                 var location = await Geolocation.GetLastKnownLocationAsync();
-
-                 customMap.MoveToRegion(MapSpan.FromCenterAndRadius(new Position(location.Latitude, location.Longitude), Distance.FromMiles(1.0)));
+                 Location location = await Geolocation.GetLastKnownLocationAsync();
+                 if (location != null)
+                     customMap.MoveToRegion(MapSpan.FromCenterAndRadius(new Position(location.Latitude, location.Longitude), Distance.FromMiles(1.0)));
              });
         }
 
