@@ -8,5 +8,6 @@ Using the data from [https://github.com/CSSEGISandData/COVID-19](https://github.
 ## Builds and Releases
 All builds and releases are done through Microosft's App Center.
  - [Android](https://install.appcenter.ms/users/dynamensions/apps/cornona-virus-live-android/distribution_groups/public)
+ - [Windows](https://install.appcenter.ms/users/dynamensions/apps/cornona-virus-live-uwp/distribution_groups/public)
 
 
