@@ -2,19 +2,30 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace CoronaVirusLive.ViewModels
 {
-    public class BaseViewModel : INotifyPropertyChanged
+    public abstract class BaseViewModel : INotifyPropertyChanged
     {
 
         bool isBusy = false;
+
+        /// <summary>
+        /// Status to enable/disable the control
+        /// </summary>
         public bool IsBusy
         {
             get { return isBusy; }
             set { SetProperty(ref isBusy, value); }
         }
+
+        /// <summary>
+        /// Overridable. Prepares the view model with data.
+        /// </summary>
+        public abstract Task PrepareViewModelAsync();
+
 
         string title = string.Empty;
         public string Title
@@ -47,7 +58,7 @@ namespace CoronaVirusLive.ViewModels
 
         protected void UpdateStatus(string message)
         {
-            MessagingCenter.Send<BaseViewModel, Messages.StatusMessage>(this, "Status", new Messages.StatusMessage(message));
+            MessagingCenter.Send<BaseViewModel, String>(this, "Status", message);
         }
     }
 }

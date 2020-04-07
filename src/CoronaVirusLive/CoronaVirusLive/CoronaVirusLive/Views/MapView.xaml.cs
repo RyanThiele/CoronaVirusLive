@@ -12,11 +12,12 @@ using Xamarin.Forms.Xaml;
 namespace CoronaVirusLive.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class MapPage : ContentPage
+    public partial class MapView : ContentView
     {
+
         MapViewModel viewModel;
 
-        public MapPage()
+        public MapView()
         {
             InitializeComponent();
 
@@ -24,40 +25,20 @@ namespace CoronaVirusLive.Views
 
             BindingContext = viewModel = new MapViewModel();
 
-            MessagingCenter.Subscribe<MapViewModel, IEnumerable<Pin>>(this, "PinsUpdated", async (sender, args) =>
-             {
+            MessagingCenter.Subscribe<MapViewModel, IEnumerable<CustomPin>>(this, "PinsUpdated", async (sender, args) =>
+            {
 
-                 MessagingCenter.Send<MapViewModel, string>(this.viewModel, "CasesDataStatus", "Plotting cases...");
-                 //await Task.Delay(1000);
+                MessagingCenter.Send<MapViewModel, string>(this.viewModel, "CasesDataStatus", "Plotting cases...");
 
-                 if (args != null && args.Count() >= 0)
-                 {
-                     List<CustomPin> customPins = new List<CustomPin>();
+                if (args != null && args.Count() >= 0)
+                {
+                    customMap.CustomPins = args.ToList();
+                }
 
-                     foreach (Pin pin in args)
-                     {
-                         CustomPin customPin = new CustomPin
-                         {
-                             Type = PinType.Place,
-                             Position = new Position(pin.Position.Latitude, pin.Position.Longitude),
-                             Label = pin.Label,
-                             Address = pin.Address,
-                             Name = "Xamarin"
-                         };
+                MessagingCenter.Send<MapViewModel, string>(this.viewModel, "CasesDataStatus", null);
+                await MoveMapToLocationAsync();
 
-                         customMap.Pins.Add(customPin);
-                         customPins.Add(customPin);
-                     }
-
-                     customMap.CustomPins = new List<CustomPin>(customPins);
-                     //customMap.OnCustomPinsUpdated();
-                 }
-
-
-                 MessagingCenter.Send<MapViewModel, string>(this.viewModel, "CasesDataStatus", null);
-                 await MoveMapToLocationAsync();
-
-             });
+            });
         }
 
 
@@ -88,10 +69,5 @@ namespace CoronaVirusLive.Views
             }
         }
 
-
-        protected override void OnAppearing()
-        {
-            base.OnAppearing();
-        }
     }
 }

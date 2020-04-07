@@ -1,8 +1,5 @@
 ﻿using CoronaVirusLive.CustomControls;
-using System;
-using Windows.System;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Input;
 
 namespace CoronaVirusLive.UWP
 {
@@ -19,13 +16,33 @@ namespace CoronaVirusLive.UWP
 
         void SetupData()
         {
-            Label.Text = customPin.Label;
+            ConfirmedAmountControl.Amount = customPin.Confirmed;
+            DeathAmountControl.Amount = customPin.Deaths;
+            RecoveredAmountControl.Amount = customPin.Recovered;
+
+            if (customPin.ConfirmedChangedAmount == 0)
+                ConfirmedAmountControl.ChangeType = Uwp.AmountControl.ChangeTypes.None;
+            else if (customPin.ConfirmedChangedAmount > 0)
+                ConfirmedAmountControl.ChangeType = Uwp.AmountControl.ChangeTypes.Up;
+            else
+                ConfirmedAmountControl.ChangeType = Uwp.AmountControl.ChangeTypes.Down;
+
+            if (customPin.Deaths == 0)
+                DeathAmountControl.ChangeType = Uwp.AmountControl.ChangeTypes.None;
+            else if (customPin.Deaths > 0)
+                DeathAmountControl.ChangeType = Uwp.AmountControl.ChangeTypes.Up;
+            else
+                DeathAmountControl.ChangeType = Uwp.AmountControl.ChangeTypes.Down;
+
+            if (customPin.Recovered == 0)
+                RecoveredAmountControl.ChangeType = Uwp.AmountControl.ChangeTypes.None;
+            else if (customPin.Recovered > 0)
+                RecoveredAmountControl.ChangeType = Uwp.AmountControl.ChangeTypes.Up;
+            else
+                RecoveredAmountControl.ChangeType = Uwp.AmountControl.ChangeTypes.Down;
+
             Address.Text = customPin.Address;
         }
 
-        private async void OnInfoButtonTapped(object sender, TappedRoutedEventArgs e)
-        {
-            await Launcher.LaunchUriAsync(new Uri(customPin.Url));
-        }
     }
 }

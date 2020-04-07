@@ -22,10 +22,10 @@ namespace CoronaVirusLive.Uwp
         bool xamarinOverlayShown = false;
 
 
-
         protected override void OnElementChanged(ElementChangedEventArgs<Map> e)
         {
             base.OnElementChanged(e);
+
 
             if (e.OldElement != null)
             {

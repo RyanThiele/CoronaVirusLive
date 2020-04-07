@@ -1,4 +1,5 @@
 ﻿using CoronaVirusLive.Models;
+using Microsoft.AppCenter.Analytics;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,26 +13,10 @@ namespace CoronaVirusLive.Services
         private readonly string baseUri = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports";
         private readonly DateTime earlestDate = new DateTime(2020, 01, 22);
 
+
         #region Helpers
 
-        #endregion
-
-
-        public async Task<IEnumerable<Case>> GetCasesAsync()
-        {
-            List<Case> cases = new List<Case>();
-            int days = (DateTime.Today - earlestDate).Days;
-
-            for (int i = 0; i < days; i++)
-            {
-                IEnumerable<Case> models = await GetCasesByDate(earlestDate.AddDays(i));
-                if (models != null) cases.AddRange(models);
-            }
-
-            return cases;
-        }
-
-        public async Task<IEnumerable<Case>> GetCasesByDate(DateTime date)
+        private async Task<IEnumerable<Case>> GetDataByDate(DateTime date)
         {
             List<Case> models = new List<Case>();
 
@@ -60,13 +45,24 @@ namespace CoronaVirusLive.Services
                                 Case model = new Case(line);
                                 if (model == null) continue;
 
+                                if (model.Confirmed == 0 && model.Deaths == 0 && model.Recovered == 0) continue;
+
                                 models.Add(model);
                             }
                         }
                     }
+
+                    Analytics.TrackEvent("JohnHopkinsCaseService", new Dictionary<string, string> {
+                    { "Category", "Data" },
+                    { "Amount", models.Count.ToString()}
+                    });
                 }
                 catch (Exception ex)
                 {
+                    Analytics.TrackEvent("JohnHopkinsCaseService", new Dictionary<string, string> {
+                    { "Category", "Data" },
+                    { "Error", ex.Message}
+                    });
 
                 }
 
@@ -74,5 +70,28 @@ namespace CoronaVirusLive.Services
 
             }
         }
+
+        #endregion
+
+
+        public async Task<IEnumerable<Case>> GetCasesAsync()
+        {
+            List<Case> cases = new List<Case>();
+            int days = (DateTime.Today - earlestDate).Days;
+
+            for (int i = 0; i < days; i++)
+            {
+                IEnumerable<Case> models = await GetDataByDate(earlestDate.AddDays(i));
+                if (models != null) cases.AddRange(models);
+            }
+
+            return cases;
+        }
+
+        public Task<IEnumerable<Case>> GetCasesByDate(DateTime date)
+        {
+            return GetDataByDate(date);
+        }
+
     }
 }

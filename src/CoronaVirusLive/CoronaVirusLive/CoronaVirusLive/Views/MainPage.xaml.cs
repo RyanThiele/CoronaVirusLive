@@ -7,17 +7,17 @@ using Xamarin.Forms.Xaml;
 namespace CoronaVirusLive.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class MainPage : TabbedPage
+    public partial class MainPage : ContentPage
     {
-        MainPageViewModel viewModel;
+        private MainPageViewModel viewModel;
 
         public ICommand NavigateCommand { get; set; }
-
 
 
         public MainPage()
         {
             InitializeComponent();
+
 
             BindingContext = this.viewModel = new MainPageViewModel();
 
@@ -27,14 +27,13 @@ namespace CoronaVirusLive.Views
                 await Navigation.PushAsync(page);
             });
 
-           // BindingContext = this;
         }
 
         protected override async void OnAppearing()
         {
             base.OnAppearing();
 
-            await viewModel.GetCasesAsync();
+            await viewModel.PrepareViewModelAsync();
         }
     }
 }

@@ -9,6 +9,5 @@ namespace CoronaVirusLive.Services
     {
         Task<IEnumerable<Case>> GetCasesAsync();
         Task<IEnumerable<Case>> GetCasesByDate(DateTime date);
-
     }
 }

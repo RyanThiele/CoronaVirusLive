@@ -8,8 +8,8 @@
 
   <Identity
     Name="225e64c1-7aa1-4e1b-b46e-bb75c1b35708"
-    Publisher="CN=dynam"
-    Version="1.0.0.0" />
+    Publisher="CN=7D1D5281-9FD5-4714-BFD9-00222A346F86"
+    Version="1.0.1.0" />
 
   <mp:PhoneIdentity PhoneProductId="225e64c1-7aa1-4e1b-b46e-bb75c1b35708" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
@@ -45,5 +45,6 @@
 
   <Capabilities>
     <Capability Name="internetClient" />
+    <DeviceCapability Name="location"/>
   </Capabilities>
 </Package>

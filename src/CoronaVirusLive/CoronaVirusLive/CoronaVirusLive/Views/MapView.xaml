@@ -1,13 +1,12 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:maps="clr-namespace:Xamarin.Forms.Maps;assembly=Xamarin.Forms.Maps"
              xmlns:controls="clr-namespace:CoronaVirusLive.CustomControls"
              mc:Ignorable="d"
-             x:Class="CoronaVirusLive.Views.MapPage">
-    <ContentPage.Content>
+             x:Class="CoronaVirusLive.Views.MapView">
+  <ContentView.Content>
         <Grid>
             <StackLayout>
                 <Label HorizontalTextAlignment="End" Text="{Binding Status}" />
@@ -16,5 +15,5 @@
             <Frame BackgroundColor="#80000000" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" IsVisible="{Binding IsDataStatusVisible}" />
             <Label HorizontalTextAlignment="Center" Text="{Binding DataStatus}" IsVisible="{Binding IsDataStatusVisible}" FontSize="Header" FontAttributes="Bold" VerticalTextAlignment="Center" />
         </Grid>
-    </ContentPage.Content>
-</ContentPage>
+    </ContentView.Content>
+</ContentView>

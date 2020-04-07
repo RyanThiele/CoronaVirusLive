@@ -1,8 +1,9 @@
-﻿using CoronaVirusLive.Models;
+﻿using CoronaVirusLive.CustomControls;
+using CoronaVirusLive.Models;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Maps;
 
@@ -11,7 +12,7 @@ namespace CoronaVirusLive.ViewModels
     public class MapViewModel : BaseViewModel
     {
 
-        private readonly List<Pin> pins = new List<Pin>();
+        private List<Pin> pins = new List<Pin>();
 
 
         #region Constructors
@@ -20,53 +21,92 @@ namespace CoronaVirusLive.ViewModels
         {
             Title = "Map";
 
-            MessagingCenter.Subscribe<MainPageViewModel, IEnumerable<Case>>(this, "CasesUpdated", (sender, arg) =>
+            MessagingCenter.Subscribe<BaseViewModel, string>(this, "Status", (sender, arg) =>
             {
-                Cases.Clear();
-                pins.Clear();
-                DateTime latestUpdate = new DateTime();
+                IsDataStatusVisible = arg != null;
+                DataStatus = arg;
+            });
 
-                if (arg != null && arg.Count() > 0)
+            MessagingCenter.Subscribe<MapViewModel, string>(this, "CasesDataStatus", (sender, arg) =>
+            {
+                IsDataStatusVisible = arg != null;
+                DataStatus = arg;
+            });
+
+
+            MessagingCenter.Subscribe<MainPageViewModel, Dictionary<DateTime, IEnumerable<Case>>>(this, "CasesUpdated", (sender, arg) =>
+            {
+
+                if (arg != null && arg.Count() != 0)
                 {
-                    foreach (Case model in arg)
-                    {
-                        if (model.Confirmed == 0 && model.Deaths == 0 && model.Recovered == 0) continue;
+                    // get the latest cases
+                    DateTime? latestestDateTime = arg.Keys.OrderByDescending(x => x).FirstOrDefault();
+                    DateTime? nextlatestestDateTime = arg.Keys.OrderByDescending(x => x).Skip(1).FirstOrDefault();
 
-                        Cases.Add(model);
-                        pins.Add(new Pin()
+                    if (latestestDateTime == null)
+                    {
+                        InformNoUpdates();
+                        return;
+                    }
+
+                    List<CustomPin> pins = new List<CustomPin>();
+
+                    foreach (Case model in arg[latestestDateTime.Value])
+                    {
+                        CustomPin customPin = new CustomPin()
                         {
                             Position = new Position(model.Latitude, model.Longitude),
                             Label = $"Confirmed: {model.Confirmed} Dead: {model.Deaths} Recovered: {model.Recovered}",
                             Address = $"{model.Admin2}, {model.ProvinceState}, {model.CountryRegion}",
+                            Confirmed = model.Confirmed,
+                            Deaths = model.Deaths,
+                            Recovered = model.Recovered,
+                            CityRegion = model.Admin2,
+                            StateProvince = model.ProvinceState,
+                            Country = model.CountryRegion,
                             Type = PinType.Place
-                        });
+                        };
 
-                        if (model == null) continue;
-                        if (model.LastUpdate == null) continue;
-                        if (model.LastUpdate == new DateTime()) continue;
-                        if (model.LastUpdate > latestUpdate) latestUpdate = model.LastUpdate;
+                        // add change
+                        if (nextlatestestDateTime.HasValue)
+                        {
+                            Case nextLatestCase = arg[nextlatestestDateTime.Value]
+                            .Where(m => m.Admin2 == customPin.CityRegion)
+                            .Where(m => m.ProvinceState == customPin.StateProvince)
+                            .Where(m => m.CountryRegion == customPin.Country)
+                            .FirstOrDefault();
+
+                            if (nextLatestCase != null)
+                            {
+                                customPin.ChangedAmountDateTime = nextlatestestDateTime.Value;
+                                customPin.ConfirmedChangedAmount = customPin.Confirmed - nextLatestCase.Confirmed;
+                                customPin.DeathsChangedAmount = customPin.Deaths - nextLatestCase.Deaths;
+                                customPin.RecoveredChangedAmount = customPin.Recovered - nextLatestCase.Recovered;
+                            }
+                        }
+
+                        pins.Add(customPin);
                     }
 
-                    if (latestUpdate > new DateTime())
-                    {
-                        Status = $"Latest Update: {latestUpdate.ToString()}";
-                    }
-                    else
-                    {
-                        Status = $"No updates found.";
-                    }
+                    Status = $"Latest Update: {latestestDateTime.Value.ToString()}";
 
+                    MessagingCenter.Send<MapViewModel, IEnumerable<CustomPin>>(this, "PinsUpdated", pins);
                 }
                 else
                 {
-                    Status = $"No updates found.";
+                    InformNoUpdates();
                 }
-
-
-
-                MessagingCenter.Send<MapViewModel, IEnumerable<Pin>>(this, "PinsUpdated", pins);
-
             });
+
+
+        }
+
+
+        private void InformNoUpdates()
+        {
+            Status = $"No updates found.";
+            MessagingCenter.Send<MapViewModel, IEnumerable<Pin>>(this, "PinsUpdated", pins);
+            return;
         }
 
         #endregion Constructors
@@ -80,13 +120,33 @@ namespace CoronaVirusLive.ViewModels
 
         #region Properties
 
-        public ObservableCollection<Case> Cases { get; set; } = new ObservableCollection<Case>();
+        //public ObservableCollection<Case> Cases { get; set; } = new ObservableCollection<Case>();
 
         string status = null;
         public string Status
         {
             get { return status; }
             set { SetProperty(ref status, value); }
+        }
+
+
+        bool isDataStatusVisible = false;
+        public bool IsDataStatusVisible
+        {
+            get { return isDataStatusVisible; }
+            set { SetProperty(ref isDataStatusVisible, value); }
+        }
+
+        string dataStatus = null;
+        public string DataStatus
+        {
+            get { return dataStatus; }
+            set { SetProperty(ref dataStatus, value); }
+        }
+
+        public override Task PrepareViewModelAsync()
+        {
+            throw new NotImplementedException();
         }
 
         #endregion Properties
