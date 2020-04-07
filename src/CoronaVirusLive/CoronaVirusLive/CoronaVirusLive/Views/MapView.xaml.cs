@@ -32,6 +32,11 @@ namespace CoronaVirusLive.Views
 
                 if (args != null && args.Count() >= 0)
                 {
+                    foreach (CustomPin pin in args)
+                    {
+                        customMap.Pins.Add(pin);
+                    }
+
                     customMap.CustomPins = args.ToList();
                 }
 

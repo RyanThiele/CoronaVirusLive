@@ -1,30 +1,118 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:orientation="vertical">
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_margin="10dp">
+        android:orientation="horizontal">
+        <!-- Confirmed -->
         <TextView
-            android:id="@+id/InfoWindowTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="InfoWindowTitle"
+            android:text="Confirmed:"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"/>
+        <TextView
+            android:id="@+id/ConfirmedTextWindow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp" />
+        <TextView
+            android:id="@+id/ConfirmedChangedAmountTextWindow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+0"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"
+            android:layout_marginLeft="2dp"/>
+        <ImageView
+            android:id="@+id/ConfirmedImageWindow"
+            android:layout_width="17.0dp"
+            android:layout_height="17.0dp"
+            android:visibility="visible"
+            android:src="@drawable/uparrow"
+            android:contentDescription="Confirmed Increase And Decrease"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <!-- Deaths -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Deaths:"
             android:textColor="@android:color/black"
             android:textStyle="bold" />
         <TextView
-            android:id="@+id/InfoWindowSubtitle"
+            android:id="@+id/DeathsTextWindow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="InfoWindowSubtitle"
-            android:textColor="@android:color/black" />
+            android:text="0"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp" />
+         <TextView
+            android:id="@+id/DeathsChangedAmountTextWindow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+0"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"
+            android:layout_marginLeft="2dp"/>
+            <ImageView
+            android:id="@+id/DeathsImageWindow"
+            android:layout_width="17.0dp"
+            android:layout_height="17.0dp"
+            android:visibility="visible"
+            android:src="@drawable/uparrow"
+            android:contentDescription="Deaths Increase And Decrease"/>
     </LinearLayout>
-    <ImageButton
-        android:id="@+id/InfoWindowButton"
-        android:layout_height="match_parent"
-        android:layout_width="match_parent"
-        android:src="@mipmap/info" />
+     <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Recovered:"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"/>
+        <TextView
+            android:id="@+id/RecoveredTextWindow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp" />
+        <TextView
+            android:id="@+id/RecoveredChangedAmountTextWindow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+0"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"
+            android:layout_marginLeft="2dp"/> <ImageView
+            android:id="@+id/RecoveredImageWindow"
+            android:layout_width="17.0dp"
+            android:layout_height="17.0dp"
+            android:visibility="visible"
+            android:src="@drawable/uparrow"
+            android:contentDescription="Recovered Increase And Decrease"/>
+    </LinearLayout>
+    <TextView
+        android:id="@+id/AddressTextWindow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Address"
+        android:textColor="@android:color/black" />
 </LinearLayout>
